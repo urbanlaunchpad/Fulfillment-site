@@ -7,8 +7,16 @@
     	<meta name="description" content="">
     	<meta name="author" content="">   
     	<script type="text/javascript">
+    		var mainDatabaseFusionTableID = "1OIi7vxHHfNYOCk_8kTnVMqZrw4hF7VlTxLsxPz-O"; // Table with product tracking info.
     		function getShirtInfo(key){
-
+      			var queryString = "SELECT project_name, fusion_table FROM " + mainDatabaseFusionTableID + " WHERE ";
+      			var query = new google.visualization.Query(
+            	'http://www.google.com/fusiontables/gvizdata?tq=' + 
+            	encodeURIComponent(queryString));   
+            	query.send(queryProjects2);
+    		}
+    		function getShirtInfo2(){
+    			return info;
     		}
     		function parseKey(key){
     			var isKeyOK = false;
@@ -23,8 +31,8 @@
     		function showInfo{
     			var key = getKey();
     			if (parseKey(key)){
-    				getShirtInfo();
-    				fillTable();
+    				var info = getShirtInfo();
+    				fillTable(info);
     			} else {
     				showParseError{
 
