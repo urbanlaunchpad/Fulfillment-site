@@ -20,8 +20,9 @@
     		}
     		function parseKey(key){
     			var isKeyOK = false;
-
-
+    			if (!isKeyOK){
+    				showParseError();
+    			}
     			return isKeyOK;
     		}
     		function getKey(){
@@ -31,12 +32,9 @@
     		function showInfo{
     			var key = getKey();
     			if (parseKey(key)){
-    				var info = getShirtInfo();
+    				var info = getShirtInfo(key);
     				fillTable(info);
     			} else {
-    				showParseError{
-
-    				}
     			}
     		}
     		function showParseError{
@@ -48,6 +46,12 @@
     	</script>     
     </head>
     <body role="document">
-
+    	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    		<form action="demo_form.asp">
+  				Design Batch: <input type="text" name="design_Batch"><br>
+  				Unique id: <input type="text" name="unique_ID"><br>
+  				<input type="submit" value="Submit">
+				</form>
+    	</div>
     </body>
 </html>
