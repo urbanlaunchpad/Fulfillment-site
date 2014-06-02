@@ -1,22 +1,37 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<meta name="description" content="">
-    	<meta name="author" content="">   
+    	<meta name="author" content="">
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>   
     	<script type="text/javascript">
+            google.load('visualization', '1', {packages: ['corechart']});
     		var mainDatabaseFusionTableID = "1OIi7vxHHfNYOCk_8kTnVMqZrw4hF7VlTxLsxPz-O"; // Table with product tracking info.
-    		function getShirtInfo(key){
-      			var queryString = "SELECT project_name, fusion_table FROM " + mainDatabaseFusionTableID + " WHERE ";
+            var whatToGetFusionTableID = "1bm8y6K3bFzpbdRZLtV5VPZrNcXuuj1mjle-4-7de"; // Table with the list of items to be pulled from the main database to be shown on the product information table.
+            function initialize(){
+                getWhatToGet();
+
+            }
+
+            function getWhatToGet(){
+
+            }
+
+    		function getShirtInfo(key, whatToGet){
+                whatToGet = "FP_In_Charge, FP_Location, FP_Time, FP_Hands, MF_In_Charge, MF_Location, MF_Time, MF_Hands";
+                key = ["14A", "15"];
+      			var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key[0] + "'";
       			var query = new google.visualization.Query(
             	'http://www.google.com/fusiontables/gvizdata?tq=' + 
             	encodeURIComponent(queryString));   
-            	query.send(queryProjects2);
-    		}
-    		function getShirtInfo2(){
-    			return info;
+            	query.send(function (response){
+                        var table = response.getDataTable();
+                        var rows = table.getNumberOfRows();
+                        alert("Hello! I am an alert box!!");
+                });
     		}
     		function parseKey(key){
     			var isKeyOK = false;
@@ -29,23 +44,23 @@
 
     			return key;
     		}
-    		function showInfo{
+    		function showInfo(){
     			var key = getKey();
     			if (parseKey(key)){
-    				var info = getShirtInfo(key);
+    				var info = getShirtInfo(key, whatToGet);
     				fillTable(info);
     			} else {
     			}
     		}
-    		function showParseError{
+    		function showParseError(){
 
-    		};
-    		function fillTable{
+    		}
+    		function fillTable(){
 
     		}
     	</script>     
     </head>
-    <body role="document">
+    <body role="document" onload="getShirtInfo('key', 'whatToGet')">
     	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     		<form action="demo_form.asp">
   				Design Batch: <input type="text" name="design_Batch"><br>
