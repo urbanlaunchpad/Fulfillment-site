@@ -23,14 +23,14 @@
     		function getShirtInfo(key, whatToGet){
                 whatToGet = "FP_In_Charge, FP_Location, FP_Time, FP_Hands, MF_In_Charge, MF_Location, MF_Time, MF_Hands";
                 key = ["14A", "15"];
-      			var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key[0] + "'";
+      			var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key[0] + "' AND Start_ID <= '" + key[1] +  + "' AND End_ID >= '" + key[1] + "'";
       			var query = new google.visualization.Query(
             	'http://www.google.com/fusiontables/gvizdata?tq=' + 
             	encodeURIComponent(queryString));   
             	query.send(function (response){
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
-                        alert("Hello! I am an alert box!!");
+                        alert("LOL " + table.getValue(0, 1) + "Rows " + rows);
                 });
     		}
     		function parseKey(key){
