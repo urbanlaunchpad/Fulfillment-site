@@ -66,6 +66,7 @@
                 infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"]
 
                 var tableHead = document.getElementById("garment_info_table_head");
+                tableHead.removeChild(tableHead.firstChild);
                 var headRow = document.createElement("tr");
                 for(var i = 0; i < infoToshow.length; i++){
                     var cell = document.createElement("td");
