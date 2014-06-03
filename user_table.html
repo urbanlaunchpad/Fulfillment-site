@@ -20,36 +20,38 @@
 
             }
 
-    		function getShirtInfo(key, whatToGet){
+            function getShirtInfo(key, whatToGet){
                 whatToGet = "FP_In_Charge, FP_Location, FP_Time, FP_Hands, MF_In_Charge, MF_Location, MF_Time, MF_Hands";
-                key = ["14A", "15"];
-      			var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key[0] + "' AND Start_ID <= '" + key[1] +  + "' AND End_ID >= '" + key[1] + "'";
-      			var query = new google.visualization.Query(
-            	'http://www.google.com/fusiontables/gvizdata?tq=' + 
-            	encodeURIComponent(queryString));   
+      			var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key.design_Batch + "' AND Start_ID <= '" + key.unique_ID + "' AND End_ID >= '" + key.unique_ID + "'";
+      			var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
             	query.send(function (response){
+                        alert("LOL");
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
                         alert("LOL " + table.getValue(0, 1) + "Rows " + rows);
                 });
+                //return table;
     		}
+            // TODO Add parsing function for the key.
     		function parseKey(key){
-    			var isKeyOK = false;
+    			var isKeyOK = true;
     			if (!isKeyOK){
     				showParseError();
     			}
     			return isKeyOK;
     		}
-    		function getKey(){
-
+    		function getKeyFromForm(){
+                var key = {
+                    design_Batch : document.getElementById("design_Batch").value,
+                    unique_ID : document.getElementById("unique_ID").value,
+                };
     			return key;
     		}
-    		function showInfo(){
-    			var key = getKey();
-    			if (parseKey(key)){
-    				var info = getShirtInfo(key, whatToGet);
+    		function onShowButtonClick(){
+    			var key = getKeyFromForm();
+    			if (parseKey(key)) {
+    				var info = getShirtInfo(key, "whatToGet");
     				fillTable(info);
-    			} else {
     			}
     		}
     		function showParseError(){
@@ -60,13 +62,11 @@
     		}
     	</script>     
     </head>
-    <body role="document" onload="getShirtInfo('key', 'whatToGet')">
+    <body role="document">
     	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    		<form action="demo_form.asp">
-  				Design Batch: <input type="text" name="design_Batch"><br>
-  				Unique id: <input type="text" name="unique_ID"><br>
-  				<input type="submit" value="Submit">
-				</form>
+  				Design Batch: <input type="text" name="design_Batch" id="design_Batch"><br>
+  				Unique id: <input type="number" name="unique_ID" id="unique_ID"><br>
+  				<input type="button" value="Submit" onclick="onShowButtonClick()">
     	</div>
     </body>
 </html>
