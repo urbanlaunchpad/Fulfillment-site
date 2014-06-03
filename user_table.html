@@ -11,7 +11,9 @@
             google.load('visualization', '1', {packages: ['corechart']});
     		var mainDatabaseFusionTableID = "1OIi7vxHHfNYOCk_8kTnVMqZrw4hF7VlTxLsxPz-O"; // Table with product tracking info.
             var whatToGetFusionTableID = "1bm8y6K3bFzpbdRZLtV5VPZrNcXuuj1mjle-4-7de"; // Table with the list of items to be pulled from the main database to be shown on the product information table.
+
             function initialize(){
+                getWhatToShow();
                 getWhatToGet();
 
             }
@@ -20,15 +22,17 @@
 
             }
 
+            function getWhatToShow(){
+
+            }
+
             function getShirtInfo(key, whatToGet){
                 whatToGet = "FP_In_Charge, FP_Location, FP_Time, FP_Hands, MF_In_Charge, MF_Location, MF_Time, MF_Hands";
       			var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key.design_Batch + "' AND Start_ID <= '" + key.unique_ID + "' AND End_ID >= '" + key.unique_ID + "'";
       			var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
             	query.send(function (response){
-                        alert("LOL");
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
-                        alert("LOL " + table.getValue(0, 1) + "Rows " + rows);
                 });
                 //return table;
     		}
@@ -51,15 +55,26 @@
     			var key = getKeyFromForm();
     			if (parseKey(key)) {
     				var info = getShirtInfo(key, "whatToGet");
-    				fillTable(info);
+    				fillTable("processesToShow", "infoToshow", "info");
     			}
     		}
     		function showParseError(){
 
     		}
-    		function fillTable(){
+    		function fillTable(processesToShow, infoToshow, info){
+                processesToShow = ["Fabric production","Manufacture"];
+                infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"]
 
-    		}
+                var tableHead = document.getElementById("garment_info_table_head");
+                var headRow = document.createElement("tr");
+                for(var i = 0; i < infoToshow.length; i++){
+                    var cell = document.createElement("td");
+                    var textnode = document.createTextNode(infoToshow[i]);
+                    cell.appendChild(textnode);
+                    headRow.appendChild(cell);
+                }
+                tableHead.appendChild(headRow);
+            }
     	</script>     
     </head>
     <body role="document">
@@ -68,5 +83,11 @@
   				Unique id: <input type="number" name="unique_ID" id="unique_ID"><br>
   				<input type="button" value="Submit" onclick="onShowButtonClick()">
     	</div>
+        <table>
+            <thead id="garment_info_table_head">
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </body>
 </html>
