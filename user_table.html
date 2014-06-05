@@ -66,7 +66,7 @@
                 infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"]
 
                 var tableHead = document.getElementById("garment_info_table_head");
-                tableHead.removeChild(tableHead.firstChild);
+                tableHead.removeChild(tableHead.firstChild);        
                 var headRow = document.createElement("tr");
                 for(var i = 0; i < infoToshow.length; i++){
                     var cell = document.createElement("td");
@@ -75,6 +75,11 @@
                     headRow.appendChild(cell);
                 }
                 tableHead.appendChild(headRow);
+
+                for(var i = 0; i < processesToShow.length; i++){
+                    
+                }
+
             }
     	</script>     
     </head>
@@ -87,7 +92,7 @@
         <table>
             <thead id="garment_info_table_head">
             </thead>
-            <tbody>
+            <tbody id = "garment_info_table_body">
             </tbody>
         </table>
     </body>
