@@ -76,8 +76,16 @@
                 }
                 tableHead.appendChild(headRow);
 
+                var tableBody = document.getElementById("garment_info_table_body");
                 for(var i = 0; i < processesToShow.length; i++){
-                    
+                    var Row = document.createElement("tr");
+                    for(var j = 0; j < processesToShow.length; j++){   
+                        var cell document.createElement("td");
+                        var document.createTextNode(infoToshow[i,j]);
+                        cell.appendChild(textnode);
+                        Row.appendChild(cell);
+                    }
+                    tableBody.appendChild(Row);
                 }
 
             }
