@@ -11,12 +11,14 @@
             google.load('visualization', '1', {packages: ['corechart']});
             var mainDatabaseFusionTableID = "1OIi7vxHHfNYOCk_8kTnVMqZrw4hF7VlTxLsxPz-O"; // Table with product tracking info.
             var whatToGetFusionTableID = "1bm8y6K3bFzpbdRZLtV5VPZrNcXuuj1mjle-4-7de"; // Table with the list of items to be pulled from the main database to be shown on the product information table.
+            var stepsToShow;
+            var infoToShowKeys;
+            var whatToGet;
 
             function initialize(){
                 stepsToShow = getStepsToShow();
                 infoToShowKeys = getInfoToShow();
                 whatToGet = getWhatToGet();
-                alert(whatToGet);
             }
 
             function getStepsToShow(){
@@ -41,12 +43,22 @@
             }
 
             function getShirtInfo(key, whatToGet){
-                var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key.design_Batch + "' AND Start_ID <= '" + key.unique_ID + "' AND End_ID >= '" + key.unique_ID + "'";
+                var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key.design_Batch + "' AND Start_ID <= " + key.unique_ID + " AND End_ID >= " + key.unique_ID + "";
                 var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
                 query.send(function (response){
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
-                        alert(table.getvalue(0,0));
+                        var x = new Array(stepsToShow.lenght);
+                        var k = 0;
+                        for (var i = 0; i < stepsToShow.lenght; i++) {
+                            x[i] = new Array(infoToShowKeys.lenght);
+                            for (var j = 0; j < infoToShowKeys.lenght; j++){
+                                x[i][j] = table.getValue(0,k);
+                                alert(x[i][j]);
+                                k++;
+                            }
+                        }
+                        fillTable("processesToShow", "infoToshow", "info");
                 });
                 //return table;
             }
@@ -68,8 +80,7 @@
             function onShowButtonClick(){
                 var key = getKeyFromForm();
                 if (parseKey(key)) {
-                    var info = getShirtInfo(key, "whatToGet");
-                    fillTable("processesToShow", "infoToshow", "info");
+                    var info = getShirtInfo(key, whatToGet);
                 }
             }
             function showParseError(){
@@ -84,12 +95,12 @@
                 var headRow = document.createElement("tr");
                 for(var i = 0; i < infoToshow.length; i++){
                     var cell = document.createElement("td");
-                    var textnode = document.createTextNode(infoToshow[i]);
+                    var textnode = document.createTextNode(infoToshow[i] + "  " + whatToGet);
                     cell.appendChild(textnode);
                     headRow.appendChild(cell);
                 }
                 tableHead.appendChild(headRow);
-
+/*
                 var tableBody = document.getElementById("garment_info_table_body");
                 for(var i = 0; i < processesToShow.length; i++){
                     var row = document.createElement("tr");
@@ -100,7 +111,7 @@
                         row.appendChild(cell);
                     }
                     tableBody.appendChild(row);
-                }
+                }*/
 
             }
         </script>     
