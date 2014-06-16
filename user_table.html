@@ -46,6 +46,7 @@
             	query.send(function (response){
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
+                        alert(table.getvalue(0,0));
                 });
                 //return table;
     		}
@@ -76,7 +77,7 @@
     		}
     		function fillTable(processesToShow, infoToshow, info){
                 processesToShow = ["Fabric production","Manufacture"];
-                infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"]
+                infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"];
 
                 var tableHead = document.getElementById("garment_info_table_head");
                 tableHead.removeChild(tableHead.firstChild);        
