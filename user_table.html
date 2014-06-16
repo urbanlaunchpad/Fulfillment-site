@@ -13,21 +13,34 @@
             var whatToGetFusionTableID = "1bm8y6K3bFzpbdRZLtV5VPZrNcXuuj1mjle-4-7de"; // Table with the list of items to be pulled from the main database to be shown on the product information table.
 
             function initialize(){
-                getWhatToShow();
-                getWhatToGet();
+                stepsToShow = getStepsToShow();
+                infoToShowKeys = getInfoToShow();
+                whatToGet = getWhatToGet();
+                alert(whatToGet);
+            }
 
+            function getStepsToShow(){
+                var stepsToShow = ["Fiber", "Design","Textile_Production", "Garment_Production", "Distribution"];
+                return stepsToShow;
+            }
+
+            function getInfoToShow(){
+                var infoToShowKeys = ["In_Charge", "Location", "Time", "Hands"];
+                return infoToShowKeys;
             }
 
             function getWhatToGet(){
-
-            }
-
-            function getWhatToShow(){
-
+                var whatToGet = "";
+                for (var i = 0; i < stepsToShow.length; i++){
+                    for (var j = 0; j < infoToShowKeys.length; j++){
+                        whatToGet = whatToGet + stepsToShow[i] + "_" + infoToShowKeys[j] + ", ";
+                    }
+                }
+                whatToGet = whatToGet.substring(0, whatToGet.length - 2);
+                return whatToGet;
             }
 
             function getShirtInfo(key, whatToGet){
-                whatToGet = "FP_In_Charge, FP_Location, FP_Time, FP_Hands, MF_In_Charge, MF_Location, MF_Time, MF_Hands";
       			var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key.design_Batch + "' AND Start_ID <= '" + key.unique_ID + "' AND End_ID >= '" + key.unique_ID + "'";
       			var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
             	query.send(function (response){
@@ -78,7 +91,7 @@
             }
     	</script>     
     </head>
-    <body role="document">
+    <body role="document" onload="initialize()">
     	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   				Design Batch: <input type="text" name="design_Batch" id="design_Batch"><br>
   				Unique id: <input type="number" name="unique_ID" id="unique_ID"><br>
