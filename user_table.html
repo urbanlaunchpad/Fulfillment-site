@@ -48,17 +48,19 @@
                 query.send(function (response){
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
-                        var x = new Array(stepsToShow.lenght);
+                        var info = new Array(stepsToShow.length);
                         var k = 0;
-                        for (var i = 0; i < stepsToShow.lenght; i++) {
-                            x[i] = new Array(infoToShowKeys.lenght);
-                            for (var j = 0; j < infoToShowKeys.lenght; j++){
-                                x[i][j] = table.getValue(0,k);
-                                alert(x[i][j]);
+
+                        // Creating a table with the information of the garments. i is the steps dimension and j the details dimension.
+                        for (var i = 0; i < stepsToShow.length; i++) {
+                            info[i] = new Array(infoToShowKeys.length);
+                            for (var j = 0; j < infoToShowKeys.length; j++){
+                                info[i][j] = table.getValue(0,k);
+                                //alert(info[i][j]);
                                 k++;
                             }
                         }
-                        fillTable("processesToShow", "infoToshow", "info");
+                        fillTable(stepsToShow, "infoToshow", info);
                 });
                 //return table;
             }
@@ -86,8 +88,7 @@
             function showParseError(){
 
             }
-            function fillTable(processesToShow, infoToshow, info){
-                processesToShow = ["Fabric production","Manufacture"];
+            function fillTable(stepsToShow, infoToshow, info){
                 infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"]
 
                 var tableHead = document.getElementById("garment_info_table_head");
@@ -95,23 +96,27 @@
                 var headRow = document.createElement("tr");
                 for(var i = 0; i < infoToshow.length; i++){
                     var cell = document.createElement("td");
-                    var textnode = document.createTextNode(infoToshow[i] + "  " + whatToGet);
+                    var textnode = document.createTextNode(infoToshow[i]);
                     cell.appendChild(textnode);
                     headRow.appendChild(cell);
                 }
                 tableHead.appendChild(headRow);
-/*
+
                 var tableBody = document.getElementById("garment_info_table_body");
-                for(var i = 0; i < processesToShow.length; i++){
+                for(var i = 0; i < stepsToShow.length; i++){
                     var row = document.createElement("tr");
-                    for(var j = 0; j < infoToshow.length; j++){   
+                    for(var j = 0; j < infoToshow.length; j++){ 
                         var cell = document.createElement("td");
-                        var textnode = document.createTextNode(infoToshow[j]);
+                        if (j == 0){
+                            var textnode = document.createTextNode(stepsToShow[i]);
+                        } else {
+                            var textnode = document.createTextNode(info[i][j-1]);
+                        }
                         cell.appendChild(textnode);
                         row.appendChild(cell);
                     }
                     tableBody.appendChild(row);
-                }*/
+                }
 
             }
         </script>     
