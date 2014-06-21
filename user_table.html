@@ -19,6 +19,7 @@
                 stepsToShow = getStepsToShow();
                 infoToShowKeys = getInfoToShow();
                 whatToGet = getWhatToGet();
+                textileCodes = getTextileParsingCodes();
             }
 
             function getStepsToShow(){
@@ -30,6 +31,11 @@
                 var infoToShowKeys = ["In_Charge", "Location", "Time", "Hands"];
                 return infoToShowKeys;
             }
+
+            function getTextileParsingCodes[
+                var textileCodes = ["kot","mir","dha"]
+                return textileCodes;
+            ]
 
             function getWhatToGet(){
                 var whatToGet = "";
@@ -66,7 +72,11 @@
             }
             // TODO Add parsing function for the key.
             function parseKey(key){
-                var isKeyOK = true;
+                var isKeyOK = false;
+                if (textileCodes.indexof(key) >= 0){
+                    isKeyOK = true;
+                }
+
                 if (!isKeyOK){
                     showParseError();
                 }
@@ -86,7 +96,7 @@
                 }
             }
             function showParseError(){
-
+                alert("The ID you've entered doesn't match any of our garments. Please try again!")
             }
             function fillTable(stepsToShow, infoToshow, info){
                 infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"]
