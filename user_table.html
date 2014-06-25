@@ -9,8 +9,7 @@
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>   
         <script type="text/javascript">
             google.load('visualization', '1', {packages: ['corechart']});
-            var mainDatabaseFusionTableID = "1OIi7vxHHfNYOCk_8kTnVMqZrw4hF7VlTxLsxPz-O"; // Table with product tracking info.
-            var whatToGetFusionTableID = "1bm8y6K3bFzpbdRZLtV5VPZrNcXuuj1mjle-4-7de"; // Table with the list of items to be pulled from the main database to be shown on the product information table.
+            var mainDatabaseFusionTableID = "1WgAjYadEjbBf_PJbFh6_GPMdL9jum6pIKs1WSAZ-"; // Table with product tracking info.
             var stepsToShow;
             var infoToShowKeys;
             var whatToGet;
@@ -42,7 +41,6 @@
                 var columnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD]";
                 for (var i = 0; i < columnNames.length; i++){
                     whatToGet = whatToGet + columnNames[i] + ", ";
-
                 }
                 whatToGet = whatToGet.substring(0, whatToGet.length - 2);
                 return whatToGet;
