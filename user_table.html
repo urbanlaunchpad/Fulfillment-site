@@ -39,10 +39,10 @@
 
             function getWhatToGet(){
                 var whatToGet = "";
-                for (var i = 0; i < stepsToShow.length; i++){
-                    for (var j = 0; j < infoToShowKeys.length; j++){
-                        whatToGet = whatToGet + stepsToShow[i] + "_" + infoToShowKeys[j] + ", ";
-                    }
+                var columnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD]";
+                for (var i = 0; i < columnNames.length; i++){
+                    whatToGet = whatToGet + columnNames[i] + ", ";
+
                 }
                 whatToGet = whatToGet.substring(0, whatToGet.length - 2);
                 return whatToGet;
@@ -113,7 +113,7 @@
                 for(var i = 0; i < infoToshow.length; i++){
                     var cell = document.createElement("td");
                     var textnode = document.createTextNode(infoToshow[i]);
-                    cell.appendChild(textnode);
+                    cell.appendChild(textnode); 
                     headRow.appendChild(cell);
                 }
                 tableHead.appendChild(headRow);
