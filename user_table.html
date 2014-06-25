@@ -83,10 +83,16 @@
                 return isKeyOK;
             }
             function getKeyFromForm(){
+                var productionKey = document.getElementById("production").value;
+                var fulfillmentKey = document.getElementById("fulfillment").value;
                 var key = {
-                    design_Batch : document.getElementById("design_Batch").value,
-                    unique_ID : document.getElementById("unique_ID").value,
+                    textile : productionKey.substring(0,3),
+                    style : productionKey.substring(3,6),
+                    design_Batch : productionKey.substring(6,9),
+                    size : fulfillmentKey.substring(0,0),
+                    unique_ID : fulfillmentKey.substring(1,4),
                 };
+                alert(key.design_Batch);
                 return key;
             }
             function onShowButtonClick(){
@@ -134,12 +140,9 @@
     <body role="document" onload="initialize()">
         <div style="background-image: url(img/tag.jpg); height: 240px; width: 370px">
             <div style="position: relative; top: 200px">
-                <div style="width: 300px; margin-left: auto; margin-right: auto">    
-                    <input type="text" name="textile" id="textile" size="3" maxlength="3">
-                    <input type="text" name="style" id="style" size="3" maxlength="3">
-                    <input type="text" name="design_Batch" id="design_Batch" size="3" maxlength="3">
-                    <input type="text" name="size" id="size" size="3" maxlength="3">
-                    <input type="text" name="unique_ID" id="unique_ID" size="3" maxlength="3">
+                <div style="width: 170px; margin-left: auto; margin-right: auto">    
+                    <input type="text" name="production" id="production" size="9" maxlength="9">
+                    <input type="text" name="fulfillment" id="fulfillment" size="4" maxlength="4">
                 </div>    
             </div>
         </div>
