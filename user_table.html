@@ -132,14 +132,18 @@
         </script>     
     </head>
     <body role="document" onload="initialize()">
-        <div style="background-image: url(img/tag.jpg)">
-                Textile: <input type="text" name="textile" id="textile"><br>
-                Style: <input type="text" name="style" id="style"><br>
-                Design Batch: <input type="text" name="design_Batch" id="design_Batch"><br>
-                Size: <input type="text" name="size" id="size"><br>
-                Unique id: <input type="number" name="unique_ID" id="unique_ID"><br>
-                <input type="button" value="Submit" onclick="onShowButtonClick()">
+        <div style="background-image: url(img/tag.jpg); height: 240px; width: 370px">
+            <div style="position: relative; top: 200px">
+                <div style="width: 300px; margin-left: auto; margin-right: auto">    
+                    <input type="text" name="textile" id="textile" size="3" maxlength="3">
+                    <input type="text" name="style" id="style" size="3" maxlength="3">
+                    <input type="text" name="design_Batch" id="design_Batch" size="3" maxlength="3">
+                    <input type="text" name="size" id="size" size="3" maxlength="3">
+                    <input type="text" name="unique_ID" id="unique_ID" size="3" maxlength="3">
+                </div>    
+            </div>
         </div>
+        <input type="button" value="Submit" onclick="onShowButtonClick()">
         <table>
             <thead id="garment_info_table_head">
             </thead>
