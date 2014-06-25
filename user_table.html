@@ -32,10 +32,10 @@
                 return infoToShowKeys;
             }
 
-            function getTextileParsingCodes[
+            function getTextileParsingCodes(){
                 var textileCodes = ["kot","mir","dha"]
                 return textileCodes;
-            ]
+            }
 
             function getWhatToGet(){
                 var whatToGet = "";
@@ -72,14 +72,14 @@
             }
             // TODO Add parsing function for the key.
             function parseKey(key){
-                var isKeyOK = false;
-                if (textileCodes.indexof(key) >= 0){
+                var isKeyOK = true;
+/*                if (textileCodes.indexof(key) >= 0){
                     isKeyOK = true;
                 }
 
                 if (!isKeyOK){
                     showParseError();
-                }
+                }*/
                 return isKeyOK;
             }
             function getKeyFromForm(){
@@ -132,7 +132,7 @@
         </script>     
     </head>
     <body role="document" onload="initialize()">
-        <div>
+        <div style="background-image: url(img/tag.jpg)">
                 Textile: <input type="text" name="textile" id="textile"><br>
                 Style: <input type="text" name="style" id="style"><br>
                 Design Batch: <input type="text" name="design_Batch" id="design_Batch"><br>
