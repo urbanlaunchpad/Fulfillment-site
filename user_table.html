@@ -4,12 +4,13 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="description" content="Fulfillment database">
+        <meta name="author" content="Urban Launchpad / Daniel Palencia">
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>   
         <script type="text/javascript">
             google.load('visualization', '1', {packages: ['corechart']});
             var mainDatabaseFusionTableID = "1WgAjYadEjbBf_PJbFh6_GPMdL9jum6pIKs1WSAZ-"; // Table with product tracking info.
+            var columnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD"];
             var stepsToShow;
             var infoToShowKeys;
             var whatToGet;
@@ -38,7 +39,6 @@
 
             function getWhatToGet(){
                 var whatToGet = "";
-                var columnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD]";
                 for (var i = 0; i < columnNames.length; i++){
                     whatToGet = whatToGet + columnNames[i] + ", ";
                 }
@@ -47,24 +47,24 @@
             }
 
             function getShirtInfo(key, whatToGet){
-                var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE Design_Batch = '" + key.design_Batch + "' AND Start_ID <= " + key.unique_ID + " AND End_ID >= " + key.unique_ID + "";
+                var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE GARMENT_CODE = '" + key.garment_Code + "'";
                 var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
                 query.send(function (response){
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
                         var info = new Array(stepsToShow.length);
                         var k = 0;
-
-                        // Creating a table with the information of the garments. i is the steps dimension and j the details dimension.
-                        for (var i = 0; i < stepsToShow.length; i++) {
-                            info[i] = new Array(infoToShowKeys.length);
-                            for (var j = 0; j < infoToShowKeys.length; j++){
-                                info[i][j] = table.getValue(0,k);
-                                //alert(info[i][j]);
-                                k++;
+                        // Creating an array with all the steps storead as objects with the information in them storead with the column names as field names.
+                        var stepsArray = new Array(rows);
+                        for (var j=0; j < rows; j++){
+                            stepsArray[j] = {};
+                            for (var i=0; i < columnNames.length; i++){
+                                stepsArray[j][columnNames[i]] = table.getValue(j,i);
                             }
+                            alert("yei " + stepsArray[j].HASHTAG);
                         }
-                        fillTable(stepsToShow, "infoToshow", info);
+
+                        //fillTable(stepsToShow, "infoToshow", info);
                 });
                 //return table;
             }
@@ -81,16 +81,16 @@
                 return isKeyOK;
             }
             function getKeyFromForm(){
-                var productionKey = document.getElementById("production").value;
-                var fulfillmentKey = document.getElementById("fulfillment").value;
+                var productionKey = document.getElementById("production").value.toUpperCase();
+                var fulfillmentKey = document.getElementById("fulfillment").value.toUpperCase();
                 var key = {
+                    garment_Code : productionKey,
                     textile : productionKey.substring(0,3),
                     style : productionKey.substring(3,6),
                     design_Batch : productionKey.substring(6,9),
                     size : fulfillmentKey.substring(0,0),
                     unique_ID : fulfillmentKey.substring(1,4),
                 };
-                alert(key.design_Batch);
                 return key;
             }
             function onShowButtonClick(){
