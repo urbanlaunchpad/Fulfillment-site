@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Fulfillment database">
+        <meta name="author" content="Urban Launchpad / Daniel Palencia">
+        <!-- Script for Swiper library by iDangero.us -->
+        <link rel="stylesheet" href="style/idangerous.swiper.css">
+        <script defer src="script/idangerous.swiper-2.x.min.js"></script>
+
+        <script type="text/javascript">
+            /*======
+            Use document ready or window load events
+            For example:
+            With jQuery: $(function() { ...code here... })
+            Or window.onload = function() { ...code here ...}
+            Or document.addEventListener('DOMContentLoaded', function(){ ...code here... }, false)
+            =======*/
+
+            function createSwiperInterface() {
+                var mySwiper = new Swiper('.swiper-container',{
+                //Your options here:
+                mode:'horizontal',
+                loop: true
+                //etc..
+                });  
+            }
+        </script>
+
+
+    </head>
+    <body role="document" onload="createSwiperInterface()">
+
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!--First Slide-->
+                <div class="swiper-slide" style="background-color:red;"> 
+                    seeeeee
+                    <!-- Any HTML content of the first slide goes here -->
+                </div>
+      
+                <!--Second Slide-->
+                <div class="swiper-slide" style="background-color:blue;">
+                    sssdniuadr
+                    <!-- Any HTML content of the second slide goes here -->
+                </div>
+                <!--Third Slide-->
+            <div class="swiper-slide" style="background-color:green;"> 
+                nasidune
+                <!-- Any HTML content of the third slide goes here -->
+            </div>
+      <!--Etc..-->
+        </div>
+</div>
+
+    </body>
+</html>
