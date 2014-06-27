@@ -6,7 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Fulfillment database">
         <meta name="author" content="Urban Launchpad / Daniel Palencia">
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>   
+        <!-- Script for accessing the Fusion Tables database. -->
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>  
+        <!-- Script for Swiper library by iDangero.us -->
+        <link rel="stylesheet" href="style/idangerous.swiper.css">
+        <script defer src="script/idangerous.swiper-2.x.min.js"></script>
+
         <script type="text/javascript">
             google.load('visualization', '1', {packages: ['corechart']});
             var mainDatabaseFusionTableID = "1WgAjYadEjbBf_PJbFh6_GPMdL9jum6pIKs1WSAZ-"; // Table with product tracking info.
@@ -20,6 +25,7 @@
                 infoToShowKeys = getInfoToShow();
                 whatToGet = getWhatToGet();
                 textileCodes = getTextileParsingCodes();
+                createSwiperInterface();
             }
 
             function getStepsToShow(){
@@ -101,7 +107,25 @@
             function showParseError(){
                 alert("The ID you've entered doesn't match any of our garments. Please try again!")
             }
-        </script>     
+
+            function createSwiperInterface() {
+                var mySwiper = new Swiper('.swiper-container',{
+                    //Your options here:
+                    mode:'horizontal',
+                    loop: true,
+                    grabCursor: true
+                    //etc..
+                });  
+            }
+
+
+
+
+
+
+
+        </script>  
+
     </head>
     <body role="document" onload="initialize()">
         <div style="background-image: url(img/tag.jpg); height: 240px; width: 370px">
@@ -113,5 +137,31 @@
             </div>
         </div>
         <input type="button" value="Submit" onclick="onShowButtonClick()">
+
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!--First Slide-->
+                <div class="swiper-slide" style="background-color:red;"> 
+                    seeeeee
+                    <!-- Any HTML content of the first slide goes here -->
+                </div>
+      
+                <!--Second Slide-->
+                <div class="swiper-slide" style="background-color:blue;">
+                    sssdniuadr
+                    <!-- Any HTML content of the second slide goes here -->
+                </div>
+                <!--Third Slide-->
+            <div class="swiper-slide" style="background-color:green;"> 
+                nasidune
+                <!-- Any HTML content of the third slide goes here -->
+            </div>
+        <!--Etc..-->
+        </div>
+
+
+
+
+
     </body>
 </html>
