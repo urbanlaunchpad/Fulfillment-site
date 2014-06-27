@@ -101,37 +101,6 @@
             function showParseError(){
                 alert("The ID you've entered doesn't match any of our garments. Please try again!")
             }
-            function fillTable(stepsToShow, infoToshow, info){
-                infoToshow = ["Process", "In charge", "Location", "Time", "Number of hands"]
-
-                var tableHead = document.getElementById("garment_info_table_head");
-                tableHead.removeChild(tableHead.firstChild);        
-                var headRow = document.createElement("tr");
-                for(var i = 0; i < infoToshow.length; i++){
-                    var cell = document.createElement("td");
-                    var textnode = document.createTextNode(infoToshow[i]);
-                    cell.appendChild(textnode); 
-                    headRow.appendChild(cell);
-                }
-                tableHead.appendChild(headRow);
-
-                var tableBody = document.getElementById("garment_info_table_body");
-                for(var i = 0; i < stepsToShow.length; i++){
-                    var row = document.createElement("tr");
-                    for(var j = 0; j < infoToshow.length; j++){ 
-                        var cell = document.createElement("td");
-                        if (j == 0){
-                            var textnode = document.createTextNode(stepsToShow[i]);
-                        } else {
-                            var textnode = document.createTextNode(info[i][j-1]);
-                        }
-                        cell.appendChild(textnode);
-                        row.appendChild(cell);
-                    }
-                    tableBody.appendChild(row);
-                }
-
-            }
         </script>     
     </head>
     <body role="document" onload="initialize()">
@@ -144,11 +113,5 @@
             </div>
         </div>
         <input type="button" value="Submit" onclick="onShowButtonClick()">
-        <table>
-            <thead id="garment_info_table_head">
-            </thead>
-            <tbody id = "garment_info_table_body">
-            </tbody>
-        </table>
     </body>
 </html>
