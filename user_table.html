@@ -25,7 +25,6 @@
                 infoToShowKeys = getInfoToShow();
                 whatToGet = getWhatToGet();
                 textileCodes = getTextileParsingCodes();
-                createSwiperInterface();
             }
 
             function getStepsToShow(){
@@ -67,12 +66,25 @@
                             for (var i=0; i < columnNames.length; i++){
                                 stepsArray[j][columnNames[i]] = table.getValue(j,i);
                             }
-                            alert("yei " + stepsArray[j].STEP_DESC);
                         }
-                        //fillTable(stepsToShow, "infoToshow", info);
+                        fillCards(stepsArray);
                 });
                 //return table;
             }
+            function fillCards(stepsArray){
+                var swiperWrapper = document.getElementById("swiper-wrapper");
+                for (var i=0; i < stepsArray.length; i++){
+                  var swiperSlide = document.createElement('div');
+                  swiperSlide.className = 'swiper-slide';
+                  var title = document.createTextNode(stepsArray[i].STEP_DESC);
+                  swiperSlide.appendChild(title);
+                  swiperWrapper.appendChild(swiperSlide); 
+                }
+                createSwiperInterface();
+            }
+
+
+
             // TODO Add parsing function for the key.
             function parseKey(key){
                 var isKeyOK = true;
@@ -136,24 +148,7 @@
             <input type="button" value="Submit" onclick="onShowButtonClick()">
         </div>
         <div class="swiper-container" style="display:none" id="cardContainer">
-            <div class="swiper-wrapper">
-                <!--First Slide-->
-                <div class="swiper-slide" style="background-color:red;"> 
-                    seeeeee
-                    <!-- Any HTML content of the first slide goes here -->
-                </div>
-      
-                <!--Second Slide-->
-                <div class="swiper-slide" style="background-color:blue;">
-                    sssdniuadr
-                    <!-- Any HTML content of the second slide goes here -->
-                </div>
-                <!--Third Slide-->
-            <div class="swiper-slide" style="background-color:green;"> 
-                nasidune
-                <!-- Any HTML content of the third slide goes here -->
-            </div>
-        <!--Etc..-->
+            <div class="swiper-wrapper" id="swiper-wrapper">
         </div>
         <div class="pagination"></div>
         </div>
