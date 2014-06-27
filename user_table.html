@@ -112,8 +112,11 @@
                 var mySwiper = new Swiper('.swiper-container',{
                     //Your options here:
                     mode:'horizontal',
+                    pagination: '.pagination',
+                    paginationClickable: true,
                     loop: true,
-                    grabCursor: true
+                    grabCursor: true,
+                    createPagination: true
                     //etc..
                 });  
             }
@@ -125,6 +128,14 @@
 
 
         </script>  
+
+        <style>
+            .pagination{position:absolute;z-index:20;left:10px;bottom:10px;}
+            .swiper-pagination-switch{display:inline-block;width:8px;height:8px;border-radius:8px;background:#222;margin-right:5px;opacity:0.8;border:1px solid #fff;cursor:pointer;}
+            .swiper-visible-switch{background:#aaa;}
+            .swiper-active-switch{background:#fff;}
+        </style>
+
 
     </head>
     <body role="document" onload="initialize()">
@@ -157,6 +168,8 @@
                 <!-- Any HTML content of the third slide goes here -->
             </div>
         <!--Etc..-->
+        </div>
+        <div class="pagination"></div>
         </div>
 
 
