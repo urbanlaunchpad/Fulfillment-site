@@ -76,13 +76,6 @@
             // TODO Add parsing function for the key.
             function parseKey(key){
                 var isKeyOK = true;
-/*                if (textileCodes.indexof(key) >= 0){
-                    isKeyOK = true;
-                }
-
-                if (!isKeyOK){
-                    showParseError();
-                }*/
                 return isKeyOK;
             }
             function getKeyFromForm(){
@@ -99,10 +92,12 @@
                 return key;
             }
             function onShowButtonClick(){
+                document.getElementById("inputContainer").style.display="none";
                 var key = getKeyFromForm();
                 if (parseKey(key)) {
                     var info = getShirtInfo(key, whatToGet);
                 }
+                document.getElementById("cardContainer").style.display="block";
             }
             function showParseError(){
                 alert("The ID you've entered doesn't match any of our garments. Please try again!")
@@ -120,36 +115,27 @@
                     //etc..
                 });  
             }
-
-
-
-
-
-
-
         </script>  
-
         <style>
             .pagination{position:absolute;z-index:20;left:10px;bottom:10px;}
             .swiper-pagination-switch{display:inline-block;width:8px;height:8px;border-radius:8px;background:#222;margin-right:5px;opacity:0.8;border:1px solid #fff;cursor:pointer;}
             .swiper-visible-switch{background:#aaa;}
             .swiper-active-switch{background:#fff;}
         </style>
-
-
     </head>
     <body role="document" onload="initialize()">
-        <div style="background-image: url(img/tag.jpg); height: 240px; width: 370px">
-            <div style="position: relative; top: 200px">
-                <div style="width: 170px; margin-left: auto; margin-right: auto">    
-                    <input type="text" name="production" id="production" size="9" maxlength="9">
-                    <input type="text" name="fulfillment" id="fulfillment" size="4" maxlength="4">
-                </div>    
+        <div id="inputContainer">
+            <div style="background-image: url(img/tag.jpg); height: 240px; width: 370px">
+                <div style="position: relative; top: 200px">
+                    <div style="width: 170px; margin-left: auto; margin-right: auto">    
+                        <input type="text" name="production" id="production" size="9" maxlength="9">
+                        <input type="text" name="fulfillment" id="fulfillment" size="4" maxlength="4">
+                    </div>    
+                </div>
             </div>
+            <input type="button" value="Submit" onclick="onShowButtonClick()">
         </div>
-        <input type="button" value="Submit" onclick="onShowButtonClick()">
-
-        <div class="swiper-container">
+        <div class="swiper-container" style="display:none" id="cardContainer">
             <div class="swiper-wrapper">
                 <!--First Slide-->
                 <div class="swiper-slide" style="background-color:red;"> 
@@ -171,10 +157,5 @@
         </div>
         <div class="pagination"></div>
         </div>
-
-
-
-
-
     </body>
 </html>
