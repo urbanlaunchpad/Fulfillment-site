@@ -11,11 +11,10 @@
         <!-- Script for Swiper library by iDangero.us -->
         <link rel="stylesheet" href="style/idangerous.swiper.css">
         <script defer src="script/idangerous.swiper-2.x.min.js"></script>
-
         <script type="text/javascript">
             google.load('visualization', '1', {packages: ['corechart']});
             var mainDatabaseFusionTableID = "1WgAjYadEjbBf_PJbFh6_GPMdL9jum6pIKs1WSAZ-"; // Table with product tracking info.
-            var columnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD"];
+            var columnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD", "IMAGE"];
             var stepsToShow;
             var infoToShowKeys;
             var whatToGet;
@@ -51,6 +50,45 @@
                 return whatToGet;
             }
 
+            // var getShirtInfoPromise = new Promise(function(resolve, reject) {
+            //     // do a thing, possibly async, then…
+            //     var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE GARMENT_CODE = '" + key.garment_Code + "'";
+            //     var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
+            //     query.send(function (response){
+            //             var table = response.getDataTable();
+            //             var rows = table.getNumberOfRows();
+            //             var info = new Array(stepsToShow.length);
+            //             var k = 0;
+            //             // Creating an array with all the steps storead as objects with the information in them storead with the column names as field names.
+            //             var stepsArray = new Array(rows);
+            //             for (var j=0; j < rows; j++){
+            //                 stepsArray[j] = {};
+            //                 for (var i=0; i < columnNames.length; i++){
+            //                     stepsArray[j][columnNames[i]] = table.getValue(j,i);
+            //                 }
+            //             }
+            //             fillCards(stepsArray);
+            //     });
+
+
+            //     if (/* everything turned out fine */) {
+            //         resolve("Stuff worked!");
+            //     }
+            //     else {
+            //         reject(Error("It broke"));
+            //     }
+            // });
+
+            // getShirtInfoPromise.then(function(result) {
+            //     console.log(result); // "Stuff worked!"
+            // }, function(err) {
+            //     console.log(err); // Error: "It broke"
+            // });
+
+
+
+
+
             function getShirtInfo(key, whatToGet){
                 var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE GARMENT_CODE = '" + key.garment_Code + "'";
                 var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
@@ -67,23 +105,41 @@
                                 stepsArray[j][columnNames[i]] = table.getValue(j,i);
                             }
                         }
+
+                        stepsArray.sort(function (a, b) {
+                            if (a.STEP_NUM > b.STEP_NUM)
+                                return 1;
+                            if (a.STEP_NUM < b.STEP_NUM)
+                                return -1;
+                            // a must be equal to b
+                            return 0;
+                        });
                         fillCards(stepsArray);
                 });
                 //return table;
             }
+
             function fillCards(stepsArray){
                 var swiperWrapper = document.getElementById("swiper-wrapper");
                 for (var i=0; i < stepsArray.length; i++){
-                  var swiperSlide = document.createElement('div');
-                  swiperSlide.className = 'swiper-slide';
-                  var title = document.createTextNode(stepsArray[i].STEP_DESC);
-                  swiperSlide.appendChild(title);
+                    var swiperSlide = document.createElement('div');
+                    swiperSlide.className = 'swiper-slide';
+                    var title = document.createTextNode(stepsArray[i].STEP_DESC);
+                    swiperSlide.appendChild(title);
+
+                    var title = document.createTextNode(stepsArray[i].STEP_NUM);
+                    swiperSlide.appendChild(title);
+
+                    var Img=document.createElement("img");
+                    Img.setAttribute('src', stepsArray[i].IMAGE);
+                    swiperSlide.appendChild(Img);                  
+
+
+
                   swiperWrapper.appendChild(swiperSlide); 
                 }
                 createSwiperInterface();
             }
-
-
 
             // TODO Add parsing function for the key.
             function parseKey(key){
@@ -111,6 +167,7 @@
                 }
                 document.getElementById("cardContainer").style.display="block";
             }
+
             function showParseError(){
                 alert("The ID you've entered doesn't match any of our garments. Please try again!")
             }
@@ -123,16 +180,22 @@
                     paginationClickable: true,
                     loop: true,
                     grabCursor: true,
-                    createPagination: true
+                    createPagination: true,
+                    autoResize: true,
+                    resizeReInit: true,
                     //etc..
-                });  
+                });
             }
         </script>  
         <style>
+            html {height: 100%;}
+            body {height: 100%;}
+            .swiper-container{min-height: 100%;}
             .pagination{position:absolute;z-index:20;left:10px;bottom:10px;}
             .swiper-pagination-switch{display:inline-block;width:8px;height:8px;border-radius:8px;background:#222;margin-right:5px;opacity:0.8;border:1px solid #fff;cursor:pointer;}
             .swiper-visible-switch{background:#aaa;}
             .swiper-active-switch{background:#fff;}
+
         </style>
     </head>
     <body role="document" onload="initialize()">
@@ -147,7 +210,7 @@
             </div>
             <input type="button" value="Submit" onclick="onShowButtonClick()">
         </div>
-        <div class="swiper-container" style="display:none" id="cardContainer">
+        <div class="swiper-container" id="cardContainer" style="display:none">
             <div class="swiper-wrapper" id="swiper-wrapper">
         </div>
         <div class="pagination"></div>
