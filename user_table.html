@@ -18,6 +18,7 @@
             var stepsToShow;
             var infoToShowKeys;
             var whatToGet;
+            var stepsArray;
 
             function initialize(){
                 stepsToShow = getStepsToShow();
@@ -50,73 +51,35 @@
                 return whatToGet;
             }
 
-            // var getShirtInfoPromise = new Promise(function(resolve, reject) {
-            //     // do a thing, possibly async, then…
-            //     var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE GARMENT_CODE = '" + key.garment_Code + "'";
-            //     var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
-            //     query.send(function (response){
-            //             var table = response.getDataTable();
-            //             var rows = table.getNumberOfRows();
-            //             var info = new Array(stepsToShow.length);
-            //             var k = 0;
-            //             // Creating an array with all the steps storead as objects with the information in them storead with the column names as field names.
-            //             var stepsArray = new Array(rows);
-            //             for (var j=0; j < rows; j++){
-            //                 stepsArray[j] = {};
-            //                 for (var i=0; i < columnNames.length; i++){
-            //                     stepsArray[j][columnNames[i]] = table.getValue(j,i);
-            //                 }
-            //             }
-            //             fillCards(stepsArray);
-            //     });
-
-
-            //     if (/* everything turned out fine */) {
-            //         resolve("Stuff worked!");
-            //     }
-            //     else {
-            //         reject(Error("It broke"));
-            //     }
-            // });
-
-            // getShirtInfoPromise.then(function(result) {
-            //     console.log(result); // "Stuff worked!"
-            // }, function(err) {
-            //     console.log(err); // Error: "It broke"
-            // });
-
-
-
-
-
-            function getShirtInfo(key, whatToGet){
-                var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE GARMENT_CODE = '" + key.garment_Code + "'";
-                var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
-                query.send(function (response){
+            function getGarmentInfo(key, whatToGet){
+                var ShirtInfoPromise = new Promise(function(resolve, reject) {
+                    // do a thing, possibly async, then…
+                    var queryString = "SELECT " + whatToGet + " FROM " + mainDatabaseFusionTableID + " WHERE GARMENT_CODE = '" + key.garment_Code + "'";
+                    var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
+                    query.send(function (response){
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
                         var info = new Array(stepsToShow.length);
                         var k = 0;
                         // Creating an array with all the steps storead as objects with the information in them storead with the column names as field names.
-                        var stepsArray = new Array(rows);
+                        stepsArray = new Array(rows);
                         for (var j=0; j < rows; j++){
                             stepsArray[j] = {};
                             for (var i=0; i < columnNames.length; i++){
                                 stepsArray[j][columnNames[i]] = table.getValue(j,i);
                             }
                         }
+                    if (stepsArray.length > 0) {
+                        resolve("Stuff worked!");
+                    }
+                    else {
+                        reject(Error("It broke"));
+                    }
 
-                        stepsArray.sort(function (a, b) {
-                            if (a.STEP_NUM > b.STEP_NUM)
-                                return 1;
-                            if (a.STEP_NUM < b.STEP_NUM)
-                                return -1;
-                            // a must be equal to b
-                            return 0;
-                        });
-                        fillCards(stepsArray);
+                    });
+
                 });
-                //return table;
+                return ShirtInfoPromise;
             }
 
             function fillCards(stepsArray){
@@ -163,13 +126,27 @@
                 document.getElementById("inputContainer").style.display="none";
                 var key = getKeyFromForm();
                 if (parseKey(key)) {
-                    var info = getShirtInfo(key, whatToGet);
+                    var shirtInfoPromise = getGarmentInfo(key, whatToGet);
+                    shirtInfoPromise.then(function(result) {
+                        console.log(result); // "Stuff worked!"
+                        alert("SEEEEEEE HOLA");
+                        getActorInfo();
+                        fillCards(stepsArray);
+                    }, function(err) {
+                        console.log(err); // Error: "It broke"
+                        showError("SHIRT_INFO_ERROR")
+                    });
                 }
                 document.getElementById("cardContainer").style.display="block";
             }
 
-            function showParseError(){
-                alert("The ID you've entered doesn't match any of our garments. Please try again!")
+            function getActorInfo(){
+
+
+            }
+
+            function showError(error){
+                alert(error)
             }
 
             function createSwiperInterface() {
