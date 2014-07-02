@@ -129,9 +129,15 @@
                     var shirtInfoPromise = getGarmentInfo(key, whatToGet);
                     shirtInfoPromise.then(function(result) {
                         console.log(result); // "Stuff worked!"
-                        alert("SEEEEEEE HOLA");
-                        getActorInfo();
-                        fillCards(stepsArray);
+                        var getActorsInfoPromise = getActorsInfoPromise(stepsArray);
+                        getActorsInfoPromise.then(function(result) {
+                            console.log(result); // "Stuff worked!"
+                            var getActorsInfoPromise = getActorsInfoPromise(stepsArray);
+                            fillCards(stepsArray);
+                        }, function(err) {
+                            console.log(err); // Error: "It broke"
+                            showError("ACTORS_INFO_ERROR")
+                        });
                     }, function(err) {
                         console.log(err); // Error: "It broke"
                         showError("SHIRT_INFO_ERROR")
@@ -140,10 +146,32 @@
                 document.getElementById("cardContainer").style.display="block";
             }
 
-            function getActorInfo(){
-
-
+            function getActorsInfoPromise(stepsArray){
+                var actorsInfoPromise = new Promise(function(resolve, reject) {
+                    var promisesArray = new Array(stepsArray.length);
+                    var check = 0;
+                    for (var i=0; i < stepsArray.length; i++){
+                        promisesArray[i] = getActorInfoPromise(stepsArray.ACTOR);
+                        promisesArray[i].then(function(result) {
+                                console.log(result); // "Stuff worked!"
+                                check++;
+                                if (stepsArray.length > 0) {
+                                    resolve("Stuff worked!");
+                                }
+                            }, function(err) {
+                                console.log(err); // Error: "It broke"
+                                showError("ACTORS_INFO_ERROR")
+                                check++;
+                                if (stepsArray.length > 0) {
+                                    resolve("Stuff worked!");
+                                }
+                            });
+                    }
+                });
+                return actorsInfoPromise;
             }
+
+
 
             function showError(error){
                 alert(error)
