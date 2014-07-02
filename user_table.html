@@ -14,7 +14,9 @@
         <script type="text/javascript">
             google.load('visualization', '1', {packages: ['corechart']});
             var mainDatabaseFusionTableID = "1WgAjYadEjbBf_PJbFh6_GPMdL9jum6pIKs1WSAZ-"; // Table with product tracking info.
-            var columnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD", "IMAGE"];
+            var actorDatabaseFusionTableID = "1bF6v7cvVekql3mCBAoi6Imo9Ef1kytyYiPUz_J69";
+            var garmentColumnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD", "IMAGE"];
+            var acctorsColumnNames = ["LOCATION", "STORY", "BACKGROUND_IMAGES"];
             var stepsToShow;
             var infoToShowKeys;
             var whatToGet;
@@ -23,7 +25,6 @@
             function initialize(){
                 stepsToShow = getStepsToShow();
                 infoToShowKeys = getInfoToShow();
-                whatToGet = getWhatToGet();
                 textileCodes = getTextileParsingCodes();
             }
 
@@ -42,7 +43,7 @@
                 return textileCodes;
             }
 
-            function getWhatToGet(){
+            function getWhatToGet(columnNames){
                 var whatToGet = "";
                 for (var i = 0; i < columnNames.length; i++){
                     whatToGet = whatToGet + columnNames[i] + ", ";
@@ -65,15 +66,15 @@
                         stepsArray = new Array(rows);
                         for (var j=0; j < rows; j++){
                             stepsArray[j] = {};
-                            for (var i=0; i < columnNames.length; i++){
-                                stepsArray[j][columnNames[i]] = table.getValue(j,i);
+                            for (var i=0; i < garmentColumnNames.length; i++){
+                                stepsArray[j][garmentColumnNames[i]] = table.getValue(j,i);
                             }
                         }
                     if (stepsArray.length > 0) {
-                        resolve("Stuff worked!");
+                        resolve("Garment info ready");
                     }
                     else {
-                        reject(Error("It broke"));
+                        reject(Error("No garment info"));
                     }
 
                     });
@@ -126,13 +127,12 @@
                 document.getElementById("inputContainer").style.display="none";
                 var key = getKeyFromForm();
                 if (parseKey(key)) {
-                    var shirtInfoPromise = getGarmentInfo(key, whatToGet);
+                    var shirtInfoPromise = getGarmentInfo(key, getWhatToGet(garmentColumnNames));
                     shirtInfoPromise.then(function(result) {
                         console.log(result); // "Stuff worked!"
-                        var getActorsInfoPromise = getActorsInfoPromise(stepsArray);
-                        getActorsInfoPromise.then(function(result) {
+                        var actorsInfoPromise = getActorsInfoPromise();
+                        actorsInfoPromise.then(function(result) {
                             console.log(result); // "Stuff worked!"
-                            var getActorsInfoPromise = getActorsInfoPromise(stepsArray);
                             fillCards(stepsArray);
                         }, function(err) {
                             console.log(err); // Error: "It broke"
@@ -146,29 +146,66 @@
                 document.getElementById("cardContainer").style.display="block";
             }
 
-            function getActorsInfoPromise(stepsArray){
+            function getActorsInfoPromise(){
                 var actorsInfoPromise = new Promise(function(resolve, reject) {
+
+                    console.log("in actors promise")
+
                     var promisesArray = new Array(stepsArray.length);
                     var check = 0;
                     for (var i=0; i < stepsArray.length; i++){
-                        promisesArray[i] = getActorInfoPromise(stepsArray.ACTOR);
+                        promisesArray[i] = getActorPromise(i, getWhatToGet(acctorsColumnNames));
                         promisesArray[i].then(function(result) {
                                 console.log(result); // "Stuff worked!"
                                 check++;
                                 if (stepsArray.length > 0) {
-                                    resolve("Stuff worked!");
+                                    resolve("Got actor info");
                                 }
                             }, function(err) {
                                 console.log(err); // Error: "It broke"
                                 showError("ACTORS_INFO_ERROR")
                                 check++;
                                 if (stepsArray.length > 0) {
-                                    resolve("Stuff worked!");
+                                    resolve("No rows");
                                 }
                             });
                     }
                 });
                 return actorsInfoPromise;
+            }
+
+            function getActorPromise(index, whatToGet){
+                var actorPromise = new Promise(function(resolve, reject) {
+                    // do a thing, possibly async, then…
+                    var queryString = "SELECT " + whatToGet + " FROM " + actorDatabaseFusionTableID + " WHERE ACTOR = '" + stepsArray[index].ACTOR + "'";
+                    var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
+                    query.send(function (response){
+                        var table = response.getDataTable();
+                        var rows = table.getNumberOfRows();
+                        var info = new Array(stepsToShow.length);
+                        var k = 0;
+                        // Creating an array with all the actors storead as objects with the information in them storead with the column names as field names.
+                        alert ("SEEE " + table.getValue(0,0))
+/*                        stepsArray = new Array(rows);
+                        for (var j=0; j < rows; j++){
+                            stepsArray[j] = {};
+                            for (var i=0; i < columnNames.length; i++){
+                                stepsArray[j][columnNames[i]] = table.getValue(j,i);
+                            }
+                        }*/
+
+
+                    if (stepsArray.length > 0) {
+                        resolve("Stuff worked!");
+                    }
+                    else {
+                        reject(Error("It broke"));
+                    }
+
+                    });
+
+                });
+                return actorPromise;
             }
 
 
