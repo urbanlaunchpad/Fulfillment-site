@@ -16,11 +16,12 @@
             var mainDatabaseFusionTableID = "1WgAjYadEjbBf_PJbFh6_GPMdL9jum6pIKs1WSAZ-"; // Table with product tracking info.
             var actorDatabaseFusionTableID = "1bF6v7cvVekql3mCBAoi6Imo9Ef1kytyYiPUz_J69";
             var garmentColumnNames = ["GARMENT_NAME", "GARMENT_CODE", "STEP_NUM", "STEP_DESC", "ACTOR", "HASHTAG", "LOCATION", "LOCATION_GPS", "HANDS", "START_DATE", "COMPLETE_DATE", "DURATION_DAYS", "COST_USD", "IMAGE"];
-            var acctorsColumnNames = ["LOCATION", "STORY", "BACKGROUND_IMAGES"];
+            var actorColumnNames = ["LOCATION", "STORY", "BACKGROUND_IMAGES"];
             var stepsToShow;
             var infoToShowKeys;
             var whatToGet;
             var stepsArray;
+            var actorInfo;
 
             function initialize(){
                 stepsToShow = getStepsToShow();
@@ -70,15 +71,13 @@
                                 stepsArray[j][garmentColumnNames[i]] = table.getValue(j,i);
                             }
                         }
-                    if (stepsArray.length > 0) {
-                        resolve("Garment info ready");
-                    }
-                    else {
-                        reject(Error("No garment info"));
-                    }
-
+                        if (stepsArray.length > 0) {
+                            resolve("Garment info ready");
+                        }
+                        else {
+                            reject(Error("No garment info"));
+                        }
                     });
-
                 });
                 return ShirtInfoPromise;
             }
@@ -90,17 +89,13 @@
                     swiperSlide.className = 'swiper-slide';
                     var title = document.createTextNode(stepsArray[i].STEP_DESC);
                     swiperSlide.appendChild(title);
-
                     var title = document.createTextNode(stepsArray[i].STEP_NUM);
                     swiperSlide.appendChild(title);
-
+                    
                     var Img=document.createElement("img");
                     Img.setAttribute('src', stepsArray[i].IMAGE);
                     swiperSlide.appendChild(Img);                  
-
-
-
-                  swiperWrapper.appendChild(swiperSlide); 
+                    swiperWrapper.appendChild(swiperSlide); 
                 }
                 createSwiperInterface();
             }
@@ -148,25 +143,24 @@
 
             function getActorsInfoPromise(){
                 var actorsInfoPromise = new Promise(function(resolve, reject) {
-
-                    console.log("in actors promise")
-
+                    actorInfo = null;
+                    actorInfo = {};
                     var promisesArray = new Array(stepsArray.length);
                     var check = 0;
                     for (var i=0; i < stepsArray.length; i++){
-                        promisesArray[i] = getActorPromise(i, getWhatToGet(acctorsColumnNames));
+                        promisesArray[i] = getActorPromise(i, getWhatToGet(actorColumnNames));
                         promisesArray[i].then(function(result) {
                                 console.log(result); // "Stuff worked!"
                                 check++;
-                                if (stepsArray.length > 0) {
-                                    resolve("Got actor info");
+                                if (check == stepsArray.length) {
+                                    resolve("Got all the actors info");
                                 }
                             }, function(err) {
                                 console.log(err); // Error: "It broke"
                                 showError("ACTORS_INFO_ERROR")
                                 check++;
-                                if (stepsArray.length > 0) {
-                                    resolve("No rows");
+                                if (check == stepsArray.length) {
+                                    resolve("Got all the actors info");
                                 }
                             });
                     }
@@ -179,31 +173,28 @@
                     // do a thing, possibly async, then…
                     var queryString = "SELECT " + whatToGet + " FROM " + actorDatabaseFusionTableID + " WHERE ACTOR = '" + stepsArray[index].ACTOR + "'";
                     var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent(queryString));   
-                    query.send(function (response){
+                    query.send(function (response){     
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
                         var info = new Array(stepsToShow.length);
                         var k = 0;
                         // Creating an array with all the actors storead as objects with the information in them storead with the column names as field names.
-                        alert ("SEEE " + table.getValue(0,0))
-/*                        stepsArray = new Array(rows);
+                        var infoArray = new Array(rows);
                         for (var j=0; j < rows; j++){
-                            stepsArray[j] = {};
-                            for (var i=0; i < columnNames.length; i++){
-                                stepsArray[j][columnNames[i]] = table.getValue(j,i);
+                            infoArray[j] = {};
+                            for (var i=0; i < actorColumnNames.length; i++){
+                                infoArray[j][actorColumnNames[i]] = table.getValue(j,i);
                             }
-                        }*/
-
-
-                    if (stepsArray.length > 0) {
-                        resolve("Stuff worked!");
-                    }
-                    else {
-                        reject(Error("It broke"));
-                    }
-
+                        }
+                        actorInfo[stepsArray[index].ACTOR] = infoArray; 
+                        alert(actorInfo[stepsArray[index].ACTOR][0].STORY)
+                        if (infoArray.length > 0) {
+                            resolve("Info from actor ready");
+                        }
+                        else {
+                            reject(Error("No info from actor"));
+                        }
                     });
-
                 });
                 return actorPromise;
             }
