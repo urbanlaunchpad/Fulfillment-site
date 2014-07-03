@@ -91,10 +91,9 @@
                     swiperSlide.appendChild(title);
                     var title = document.createTextNode(stepsArray[i].STEP_NUM);
                     swiperSlide.appendChild(title);
-                    
-                    var Img=document.createElement("img");
-                    Img.setAttribute('src', stepsArray[i].IMAGE);
-                    swiperSlide.appendChild(Img);                  
+                    //alert(actorInfo[stepsArray[i].ACTOR][0].IMAGE);
+                    swiperSlide.style.backgroundImage = "url(" + actorInfo[stepsArray[i].ACTOR][0].BACKGROUND_IMAGES + ")";
+
                     swiperWrapper.appendChild(swiperSlide); 
                 }
                 createSwiperInterface();
@@ -187,7 +186,7 @@
                             }
                         }
                         actorInfo[stepsArray[index].ACTOR] = infoArray; 
-                        alert(actorInfo[stepsArray[index].ACTOR][0].STORY)
+                        //alert(actorInfo[stepsArray[index].ACTOR][0].STORY);
                         if (infoArray.length > 0) {
                             resolve("Info from actor ready");
                         }
