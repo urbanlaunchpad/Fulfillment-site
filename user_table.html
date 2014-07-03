@@ -85,20 +85,21 @@
             function fillCards(stepsArray){
                 var swiperWrapper = document.getElementById("swiper-wrapper");
                 for (var i=0; i < stepsArray.length; i++){
-                    var swiperSlide = document.createElement('div');
-                    swiperSlide.className = 'swiper-slide';
-                    var title = document.createTextNode(stepsArray[i].STEP_DESC);
-                    swiperSlide.appendChild(title);
+                    for (var j=0; j < actorInfo[stepsArray[i].ACTOR].length; j++){
+                        var swiperSlide = document.createElement('div');
+                        swiperSlide.className = 'swiper-slide';
+                        var titleDIV
+                        var title = document.createTextNode(stepsArray[i].STEP_DESC);
+                        swiperSlide.appendChild(title);
+                        var location = document.createTextNode(actorInfo[stepsArray[i].ACTOR][j].LOCATION);
+                        swiperSlide.appendChild(location);
+                        var story = document.createTextNode(actorInfo[stepsArray[i].ACTOR][j].STORY);
+                        swiperSlide.appendChild(story);
+                        //alert(actorInfo[stepsArray[i].ACTOR][0].IMAGE);
+                        swiperSlide.style.backgroundImage = "url(" + actorInfo[stepsArray[i].ACTOR][j].BACKGROUND_IMAGES + ")";
+                        swiperWrapper.appendChild(swiperSlide); 
+                    }
 
-                    var story = document.createTextNode(actorInfo[stepsArray[i].ACTOR][0].STORY);
-                    swiperSlide.appendChild(story);
-
-
-
-                    //alert(actorInfo[stepsArray[i].ACTOR][0].IMAGE);
-                    swiperSlide.style.backgroundImage = "url(" + actorInfo[stepsArray[i].ACTOR][0].BACKGROUND_IMAGES + ")";
-
-                    swiperWrapper.appendChild(swiperSlide); 
                 }
                 createSwiperInterface();
             }
@@ -201,8 +202,6 @@
                 });
                 return actorPromise;
             }
-
-
 
             function showError(error){
                 alert(error)
