@@ -89,8 +89,12 @@
                     swiperSlide.className = 'swiper-slide';
                     var title = document.createTextNode(stepsArray[i].STEP_DESC);
                     swiperSlide.appendChild(title);
-                    var title = document.createTextNode(stepsArray[i].STEP_NUM);
-                    swiperSlide.appendChild(title);
+
+                    var story = document.createTextNode(actorInfo[stepsArray[i].ACTOR][0].STORY);
+                    swiperSlide.appendChild(story);
+
+
+
                     //alert(actorInfo[stepsArray[i].ACTOR][0].IMAGE);
                     swiperSlide.style.backgroundImage = "url(" + actorInfo[stepsArray[i].ACTOR][0].BACKGROUND_IMAGES + ")";
 
