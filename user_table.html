@@ -96,7 +96,9 @@
                         var story = document.createTextNode(actorInfo[stepsArray[i].ACTOR][j].STORY);
                         swiperSlide.appendChild(story);
                         //alert(actorInfo[stepsArray[i].ACTOR][0].IMAGE);
-                        swiperSlide.style.backgroundImage = "url(" + actorInfo[stepsArray[i].ACTOR][j].BACKGROUND_IMAGES[0] + ")";
+                        numberOfImages = actorInfo[stepsArray[i].ACTOR][j].BACKGROUND_IMAGES.length;
+                        imageIndex = Math.floor(Math.random() * numberOfImages);
+                        swiperSlide.style.backgroundImage = "url(" + actorInfo[stepsArray[i].ACTOR][j].BACKGROUND_IMAGES[imageIndex] + ")";
                         swiperWrapper.appendChild(swiperSlide); 
                     }
 
@@ -162,7 +164,7 @@
                                 }
                             }, function(err) {
                                 console.log(err); // Error: "It broke"
-                                showError("ACTORS_INFO_ERROR")
+                                //showError("ACTOR_INFO_ERROR")
                                 check++;
                                 if (check == stepsArray.length) {
                                     resolve("Got all the actors info");
@@ -212,7 +214,7 @@
 
             function parseImages(imageString){
                 imageArray = imageString.split(",");
-                alert("image array lenght" + imageArray.length);
+                //alert("image array lenght" + imageArray.length);
                 return imageArray
             }
 
