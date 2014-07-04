@@ -1,4 +1,11 @@
 .card_title {
-    text-align: center;
+    text-align: left;
     color: white;
+}
+.card_story {
+	color: white;
+
+}
+.card_location{
+	color: white;
 }

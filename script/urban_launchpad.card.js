@@ -60,13 +60,25 @@ function fillCards(stepsArray, actorInfo){
         for (var j=0; j < actorInfo[stepsArray[i].ACTOR].length; j++){
             var swiperSlide = document.createElement('div');
             swiperSlide.className = 'swiper-slide';
-            var titleDIV
+
+            var cardTitle = document.createElement('h1');
+            cardTitle.className = "card_title";
             var title = document.createTextNode(stepsArray[i].STEP_DESC);
-            swiperSlide.appendChild(title);
+            cardTitle.appendChild(title);
+            swiperSlide.appendChild(cardTitle);
+
+            var locationDiv = document.createElement('h2');
+            locationDiv.className = "card_location";
             var location = document.createTextNode(actorInfo[stepsArray[i].ACTOR][j].LOCATION);
-            swiperSlide.appendChild(location);
-            var story = document.createTextNode(actorInfo[stepsArray[i].ACTOR][j].STORY);
-            swiperSlide.appendChild(story);
+            locationDiv.appendChild(location);
+            swiperSlide.appendChild(locationDiv);
+
+            var storyDiv = document.createElement('p');
+            storyDiv.className = "story_paragraph";
+            var story = document.createTextNode(actorInfo[stepsArray[i].ACTOR][j].STORY); 
+            storyDiv.appendChild(story);
+            swiperSlide.appendChild(storyDiv);
+
             //alert(actorInfo[stepsArray[i].ACTOR][0].IMAGE);
             numberOfImages = actorInfo[stepsArray[i].ACTOR][j].BACKGROUND_IMAGES.length;
             imageIndex = Math.floor(Math.random() * numberOfImages);
