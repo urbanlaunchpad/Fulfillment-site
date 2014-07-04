@@ -1,11 +1,21 @@
 .card_title {
-    text-align: left;
-    color: white;
-}
-.card_story {
+	font-family: 'Raleway', Helvetica, Arial, sans-serif;
+	font-weight: 300;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	font-size: 1.75em;
 	color: white;
-
 }
 .card_location{
 	color: white;
+	font-family: 'Lora', Georgia, serif;
+	font-weight: 400;
+	font-size: 1.125em;
+}
+.story_paragraph{
+	color: white;
+	font-family: 'Lora', Georgia, serif;
+	font-weight: 400;
+	font-size: 1em;
+	line-height: 1.5em;
 }
