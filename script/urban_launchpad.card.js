@@ -10,19 +10,7 @@
             var actorInfo;
 
             function initialize(){
-                stepsToShow = getStepsToShow();
-                infoToShowKeys = getInfoToShow();
                 textileCodes = getTextileParsingCodes();
-            }
-
-            function getStepsToShow(){
-                var stepsToShow = ["Fiber", "Design","Textile_Production", "Garment_Production", "Distribution"];
-                return stepsToShow;
-            }
-
-            function getInfoToShow(){
-                var infoToShowKeys = ["In_Charge", "Location", "Time", "Hands"];
-                return infoToShowKeys;
             }
 
             function getTextileParsingCodes(){
@@ -47,8 +35,6 @@
                     query.send(function (response){
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
-                        var info = new Array(stepsToShow.length);
-                        var k = 0;
                         // Creating an array with all the steps storead as objects with the information in them storead with the column names as field names.
                         stepsArray = new Array(rows);
                         for (var j=0; j < rows; j++){
@@ -68,7 +54,7 @@
                 return ShirtInfoPromise;
             }
 
-            function fillCards(stepsArray){
+            function fillCards(stepsArray, actorInfo){
                 var swiperWrapper = document.getElementById("swiper-wrapper");
                 for (var i=0; i < stepsArray.length; i++){
                     for (var j=0; j < actorInfo[stepsArray[i].ACTOR].length; j++){
@@ -121,7 +107,7 @@
                         var actorsInfoPromise = getActorsInfoPromise();
                         actorsInfoPromise.then(function(result) {
                             console.log(result); // "Stuff worked!"
-                            fillCards(stepsArray);
+                            fillCards(stepsArray, actorInfo);
                         }, function(err) {
                             console.log(err); // Error: "It broke"
                             showError("ACTORS_INFO_ERROR")
@@ -169,8 +155,6 @@
                     query.send(function (response){     
                         var table = response.getDataTable();
                         var rows = table.getNumberOfRows();
-                        var info = new Array(stepsToShow.length);
-                        var k = 0;
                         // Creating an array with all the actors storead as objects with the information in them storead with the column names as field names.
                         var infoArray = new Array(rows);
                         for (var j=0; j < rows; j++){
